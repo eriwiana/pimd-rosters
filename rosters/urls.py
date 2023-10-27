@@ -5,6 +5,11 @@ from rosters import views
 urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
     path("events/", views.EventListView.as_view(), name="event-list"),
+    path(
+        "events/group/<int:group_id>/",
+        views.EventListView.as_view(),
+        name="event-group-list",
+    ),
     path("events/new/", views.EventCreateView.as_view(), name="event-create"),
     path(
         "events/<uuid:event_id>/",

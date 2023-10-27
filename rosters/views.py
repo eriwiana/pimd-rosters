@@ -3,9 +3,12 @@ from typing import Any
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group
+from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, ListView, UpdateView, View
 
+from rosters.forms import EventCreateForm
 from rosters.methods import get_menus
 from rosters.models import Event
 
@@ -16,8 +19,25 @@ class EventListView(LoginRequiredMixin, ListView):
     model = Event
     template_name = "events/list.html"
 
+    def get_queryset(self) -> QuerySet[Any]:
+        qs = super().get_queryset()
+
+        group_id = self.request.resolver_match.kwargs.get("group_id", None)
+        if group_id:
+            return qs.filter(group_id=group_id)
+
+        if not self.request.user.is_superuser:
+            return qs.filter(group__in=self.request.user.groups.all())
+
+        return qs
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         kwargs["menus"] = get_menus(active="Events")
+
+        kwargs["groups"] = self.request.user.groups.all()
+        if self.request.user.is_superuser:
+            kwargs["groups"] = Group.objects.all()
+
         return super().get_context_data(**kwargs)
 
 
@@ -38,6 +58,7 @@ class EventDetailView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         kwargs["menus"] = get_menus(active="Events")
+        kwargs["groups"] = self.request.user.groups.all()
         return super().get_context_data(**kwargs)
 
 
@@ -46,13 +67,13 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     redirect_field_name = "home"
     model = Event
     template_name = "events/detail.html"
-    fields = [
-        "title",
-        "event_date",
-        "register_end_date",
-        "description",
-    ]
+    form_class = EventCreateForm
     success_url = "/events"
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         kwargs["menus"] = get_menus(active="Events")

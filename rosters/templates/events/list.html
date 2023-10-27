@@ -9,9 +9,18 @@
     </div>
   </div>
 
+  <div class="flex mx-auto mb-4 gap-2">
+    {% for group in groups %}
+    <div class="px-2 py-1 text-sm font-bold border-2 border-black rounded-lg shadow-[2px_2px_0px_1px_black]">
+      <a href="{% url 'event-group-list' group_id=group.id %}">{{ group.name }}</a>
+    </div>
+    {% endfor %}
+  </div>
+
   <table class="min-w-full table-auto">
     <thead>
       <tr>
+        <th class="px-6 py-3 bg-gray-50 text-left leading-4 font-bold uppercase tracking-wider">Group</th>
         <th class="px-6 py-3 bg-gray-50 text-left leading-4 font-bold uppercase tracking-wider">Name</th>
         <th class="px-6 py-3 bg-gray-50 text-left leading-4 font-bold uppercase tracking-wider">Registration End</th>
         <th class="px-6 py-3 bg-gray-50 text-left leading-4 font-bold uppercase tracking-wider">Date</th>
@@ -21,6 +30,9 @@
     <tbody>
       {% for event in object_list %}
       <tr class="bg-white">
+        <td class="px-6 py-4 whitespace-no-wrap">
+          {{ event.group.name }}
+        </td>
         <td class="px-6 py-4 whitespace-no-wrap">
           <a href="{% url 'event-detail' event.id|stringformat:'s' %}" class="hover:underline hover:decoration-yellow-400">
             <span
