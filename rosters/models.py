@@ -38,7 +38,7 @@ class Roster(BaseModel):
 
 
 class Event(BaseModel):
-    group = models.OneToOneField(Group, on_delete=models.SET_NULL, null=True)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
     event_date = models.DateTimeField(default=timezone.now)
