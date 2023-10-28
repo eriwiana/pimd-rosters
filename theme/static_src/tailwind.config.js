@@ -43,8 +43,8 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            sans: ["Lucida Sans Typewriter", "sans-serif"],
-            body: ["Lucida Sans Typewriter", "sans-serif"],
+            sans: ["Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"],
             mono: ["ui-monospace", "monospace"],
         },
     },
