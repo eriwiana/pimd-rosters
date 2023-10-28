@@ -29,13 +29,16 @@
         <p>{{user.username}}</p>
         <a href="{% url 'logout' %}" class="hover:text-rose-400" tooltip="Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
       </div>
-      {% for menu in menus %}
-        <div
-          class="px-3 py-2 cursor-pointer hover:bg-yellow-200 {% if menu.active %}bg-yellow-400{% else %}bg-white{% endif %} font-bold border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] mb-3">
-          <a href="{% url menu.path %}"><i class="fas {{ menu.icon }}"></i> {{ menu.label }}</a>
-        </div>
-      </a>
-      {% endfor %}
+      <ul class="mt-4">
+        {% for menu in menus %}
+        <a href="{% url menu.path %}">
+          <li
+            class="px-3 py-2 cursor-pointer hover:bg-yellow-200 {% if menu.active %}bg-yellow-400{% else %}bg-white{% endif %} font-bold border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] mb-3">
+            <i class="fas {{ menu.icon }}"></i> {{ menu.label }}
+          </li>
+        </a>
+        {% endfor %}
+      </ul>
     </aside>
     {% endif %}
     {% endblock %}
