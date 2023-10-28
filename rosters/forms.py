@@ -4,6 +4,9 @@ from rosters.models import Event
 
 
 class EventCreateForm(forms.ModelForm):
+    event_date = forms.DateTimeField(widget=forms.DateTimeInput)
+    register_end_date = forms.DateTimeField(widget=forms.DateTimeInput)
+
     def __init__(self, **kwargs):
         user = kwargs.pop("user")
         super().__init__(**kwargs)
