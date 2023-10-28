@@ -6,7 +6,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, ListView, UpdateView, View
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    ListView,
+    UpdateView,
+    View,
+)
 
 from rosters.forms import EventCreateForm
 from rosters.methods import get_menus
@@ -78,6 +84,13 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         kwargs["menus"] = get_menus(active="Events")
         return super().get_context_data(**kwargs)
+
+
+class EventDeleteView(LoginRequiredMixin, DeleteView):
+    model = Event
+    slug_field = "id"
+    slug_url_kwarg = "event_id"
+    success_url = "/events"
 
 
 class HomeView(LoginRequiredMixin, View):

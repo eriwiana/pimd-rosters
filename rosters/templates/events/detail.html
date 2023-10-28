@@ -29,6 +29,7 @@
       <i class="fas fa-pencil"></i> Save
     </button>
     <span class="ml-4"><a href="{% url 'event-list' %}" class="hover:underline hover:decoration-yellow-400">Back</a></span>
+    <span class="ml-4"><a href="{% url 'event-delete' event.id|stringformat:'s' %}" class="text-rose-400 hover:underline hover:decoration-rose-400">Delete</a></span>
   </form>
 </div>
 {% endblock %}
