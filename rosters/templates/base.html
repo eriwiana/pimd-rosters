@@ -13,10 +13,10 @@
   {% tailwind_css %}
 </head>
 
-<body>
+<body class="bg-gray-200">
 
   <!-- Container for Sidebar and Content -->
-  <div class="flex p-4 bg-gray-200 h-screen">
+  <div class="flex p-4 h-screen">
 
     <!-- Sidebar -->
     {% block sidebar %}
@@ -42,7 +42,7 @@
     {% endblock %}
 
     <!-- Content -->
-    <div class="container mx-auto p-6">
+    <div class="container mx-auto py-6 pl-6">
       {% block content %}
       <!-- Your page content goes here -->
       {% endblock %}
