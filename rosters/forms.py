@@ -1,6 +1,6 @@
 from django import forms
 
-from rosters.models import Event
+from rosters.models import Event, Roster
 
 
 class EventCreateForm(forms.ModelForm):
@@ -17,10 +17,23 @@ class EventCreateForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = [
-            "group",
-            "title",
-            "event_date",
-            "register_end_date",
-            "description",
-        ]
+        exclude = (
+            "id",
+            "rosters",
+        )
+
+
+class RosterForm(forms.ModelForm):
+    cs = forms.IntegerField(min_value=0, label="Combined Stats")
+
+    class Meta:
+        model = Roster
+        exclude = ("id",)
+
+
+RosterFormSet = forms.inlineformset_factory(
+    Event,
+    Roster,
+    form=RosterForm,
+    extra=2,
+)

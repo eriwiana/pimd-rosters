@@ -1,0 +1,31 @@
+{% load widget_tweaks %}
+<h1 class="font-bold text-lg text-center">Rosters</h1>
+<table class="table">
+    {{ rosters.management_form }}
+
+    {% for form in rosters.forms %}
+        {% if forloop.first %}
+            <thead>
+            <tr>
+                {% for field in form.visible_fields %}
+                    <th>{{ field.label|capfirst }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+        {% endif %}
+        <tr class="{% cycle row1 row2 %} formset_row">
+            {% for field in form.visible_fields %}
+                <td>
+                    {# Include the hidden fields in the form #}
+                    {% if forloop.first %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                    {% endif %}
+                    {{ field.errors.as_ul }}
+                    {% render_field field class="appearance-none rounded-md w-full py-2 px-4 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white" %}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>

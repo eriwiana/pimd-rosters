@@ -4,8 +4,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
+from django.db import transaction
 from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -14,7 +16,7 @@ from django.views.generic import (
     View,
 )
 
-from rosters.forms import EventCreateForm
+from rosters.forms import EventCreateForm, RosterFormSet
 from rosters.methods import get_menus
 from rosters.models import Event
 
@@ -60,12 +62,32 @@ class EventDetailView(LoginRequiredMixin, UpdateView):
         "register_end_date",
         "description",
     ]
-    success_url = "/events"
+    success_url = reverse_lazy("event-list")
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         kwargs["menus"] = get_menus(active="Events")
         kwargs["groups"] = self.request.user.groups.all()
-        return super().get_context_data(**kwargs)
+
+        data = super(EventDetailView, self).get_context_data(**kwargs)
+
+        if self.request.POST:
+            data["rosters"] = RosterFormSet(
+                self.request.POST, instance=self.object
+            )
+        else:
+            data["rosters"] = RosterFormSet(instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        rosters = context["rosters"]
+        with transaction.atomic():
+            self.object = form.save()
+
+            if rosters.is_valid():
+                rosters.instance = self.object
+                rosters.save()
+        return super(EventDetailView, self).form_valid(form)
 
 
 class EventCreateView(LoginRequiredMixin, CreateView):
@@ -74,7 +96,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
     template_name = "events/detail.html"
     form_class = EventCreateForm
-    success_url = "/events"
+    success_url = reverse_lazy("event-list")
 
     def get_form_kwargs(self) -> dict[str, Any]:
         kwargs = super().get_form_kwargs()
@@ -82,15 +104,33 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        kwargs["menus"] = get_menus(active="Events")
-        return super().get_context_data(**kwargs)
+        data = super().get_context_data(**kwargs)
+        data["user"] = self.request.user
+        data["menus"] = get_menus(active="Events")
+
+        if self.request.POST:
+            data["rosters"] = RosterFormSet(self.request.POST)
+        else:
+            data["rosters"] = RosterFormSet()
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        rosters = context["rosters"]
+        with transaction.atomic():
+            self.object = form.save()
+
+            if rosters.is_valid():
+                rosters.instance = self.object
+                rosters.save()
+        return super().form_valid(form)
 
 
 class EventDeleteView(LoginRequiredMixin, DeleteView):
     model = Event
     slug_field = "id"
     slug_url_kwarg = "event_id"
-    success_url = "/events"
+    success_url = reverse_lazy("event-list")
 
 
 class HomeView(LoginRequiredMixin, View):
