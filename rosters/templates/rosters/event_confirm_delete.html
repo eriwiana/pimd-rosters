@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grid place-content-center">
+  <div class="p-8 bg-white border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
+    <form method="post">
+      {% csrf_token %}
+      <h3>Are you sure you want to delete "{{ object }}"?</h3>
+      <button name="Save"
+        class="mt-2 p-1 text-sm font-bold bg-yellow-400 hover:bg-rose-400 cursor-pointer border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
+        <i class="fas fa-trash"></i> Confirm
+      </button>
+      <span class="ml-4"><a href="{% url 'event-detail' event_id=event.id %}" class="hover:underline hover:decoration-yellow-400">Back</a></span>
+    </form>
+  </div>
+</div>
+{% endblock %}
