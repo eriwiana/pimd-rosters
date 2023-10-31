@@ -76,6 +76,20 @@ class EventDetailView(LoginRequiredMixin, UpdateView):
             )
         else:
             data["rosters"] = RosterFormSet(instance=self.object)
+
+        a = []
+        b = []
+
+        for n, r in enumerate(data.get("object").roster_set.all()):
+            if n % 2 == 0:
+                a.append(r)
+            else:
+                b.append(r)
+
+        data["teams"] = [
+            {"label": "a", "rosters": a},
+            {"label": "b", "rosters": b},
+        ]
         return data
 
     def form_valid(self, form):
@@ -131,6 +145,10 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
     slug_field = "id"
     slug_url_kwarg = "event_id"
     success_url = reverse_lazy("event-list")
+
+
+class RosterSortableView(EventDetailView):
+    template_name = "partials/roster_sortable.html"
 
 
 class HomeView(LoginRequiredMixin, View):

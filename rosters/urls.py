@@ -21,6 +21,11 @@ urlpatterns = [
         views.EventDeleteView.as_view(),
         name="event-delete",
     ),
+    path(
+        "events/<uuid:event_id>/rosters/",
+        views.RosterSortableView.as_view(),
+        name="event-rosters",
+    ),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
 ]
