@@ -26,6 +26,11 @@ urlpatterns = [
         views.RosterSortableView.as_view(),
         name="event-rosters",
     ),
+    path(
+        "events/<uuid:event_id>/signup/",
+        views.RosterSignUpView.as_view(),
+        name="roster-signup",
+    ),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
 ]

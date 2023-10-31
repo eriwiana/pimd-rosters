@@ -24,11 +24,19 @@ class EventCreateForm(forms.ModelForm):
 
 
 class RosterForm(forms.ModelForm):
-    cs = forms.IntegerField(min_value=0, label="Combined Stats")
+    cs = forms.IntegerField(
+        min_value=0,
+        max_value=300000000,
+        label="Combined Stats",
+        help_text="Example: 999999 for 999kcs. 10000000 for 10Mcs.",
+    )
+    name = forms.CharField(
+        max_length=30, label="IGN", help_text="Of course, your in-game name!"
+    )
 
     class Meta:
         model = Roster
-        exclude = ("id",)
+        exclude = ("id", "event")
 
 
 RosterFormSet = forms.inlineformset_factory(

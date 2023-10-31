@@ -51,5 +51,9 @@ class Event(BaseModel):
     def active(self):
         return timezone.now().astimezone() <= self.register_end_date
 
+    @property
+    def finished(self):
+        return timezone.now().astimezone() > self.event_date
+
     def __str__(self) -> str:
         return self.title

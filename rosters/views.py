@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,9 +17,9 @@ from django.views.generic import (
     View,
 )
 
-from rosters.forms import EventCreateForm, RosterFormSet
+from rosters.forms import EventCreateForm, RosterForm, RosterFormSet
 from rosters.methods import get_menus
-from rosters.models import Event
+from rosters.models import Event, Roster
 
 
 class EventListView(LoginRequiredMixin, ListView):
@@ -149,6 +150,30 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
 
 class RosterSortableView(EventDetailView):
     template_name = "partials/roster_sortable.html"
+
+
+class RosterSignUpView(CreateView):
+    model = Roster
+    form_class = RosterForm
+    template_name = "partials/signup.html"
+
+    def form_valid(self, form):
+        form.instance.event = Event.objects.get(id=self.kwargs.get("event_id"))
+        return super(RosterSignUpView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        data = super().get_context_data(**kwargs)
+        event = Event.objects.get(id=self.kwargs.get("event_id"))
+        data["event"] = event
+        return data
+
+    def get_success_url(self) -> str:
+        messages.add_message(
+            self.request, messages.INFO, "Data inserted successfully."
+        )
+        return reverse_lazy(
+            "roster-signup", kwargs={"event_id": self.kwargs.get("event_id")}
+        )
 
 
 class HomeView(LoginRequiredMixin, View):
