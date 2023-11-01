@@ -15,7 +15,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
-
+INTERNAL_IPS = os.environ.get("INTERNAL_IPS", "127.0.0.1").split(",")
 CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", False)
 SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", False)
 SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", False)
@@ -115,6 +115,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.environ.get("STATIC_ROOT")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
