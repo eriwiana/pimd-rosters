@@ -1,12 +1,14 @@
 {% load widget_tweaks %}
 <div class="flex mx-auto justify-between mb-4 p-2">
   <h1 class="font-bold text-lg text-center">Rosters</h1>
+  {% if event %}
   <a href="{% url 'event-rosters' event.id|stringformat:'s' %}" title="Arrange Roster Teams">
     <div
       class="px-2 py-1 text-sm font-bold bg-emerald-400 hover:bg-yellow-400 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
       <i class="fas fa-grip-vertical"></i>
     </div>
   </a>
+  {% endif %}
 </div>
 <table class="table">
   {{ rosters.management_form }}
