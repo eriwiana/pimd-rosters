@@ -22,7 +22,7 @@
   <div class="flex mx-auto mb-4 gap-2">
     {% for group in groups %}
     <a href="{% url 'event-group-list' group_id=group.id %}">
-      <div class="px-2 py-1 text-sm font-bold border-2 border-black rounded-lg shadow-[2px_2px_0px_1px_black]">
+      <div class="px-2 py-1 text-sm font-bold border-2 border-black rounded-lg shadow-[2px_2px_0px_1px_black] active:bg-yellow-400">
         {{ group.name }}
       </div>
     </a>
