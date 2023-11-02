@@ -3,6 +3,7 @@ import uuid
 
 from django.contrib.auth.models import Group
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -54,6 +55,10 @@ class Event(BaseModel):
     @property
     def finished(self):
         return timezone.now().astimezone() > self.event_date
+
+    @property
+    def signup_link(self):
+        return reverse("roster-signup", kwargs={"event_id": str(self.id)})
 
     def __str__(self) -> str:
         return self.title
