@@ -1,25 +1,36 @@
 import os
 from pathlib import Path
 
+import environ
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    CSRF_COOKIE_SECURE=(bool, False),
+    SESSION_COOKIE_SECURE=(bool, False),
+    SECURE_SSL_REDIRECT=(bool, False),
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", True)
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
-INTERNAL_IPS = os.environ.get("INTERNAL_IPS", "127.0.0.1").split(",")
-CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", False)
-SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", False)
-SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", False)
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", list)
+INTERNAL_IPS = env("INTERNAL_IPS", list)
+CSRF_COOKIE_SECURE = env("CSRF_COOKIE_SECURE")
+SESSION_COOKIE_SECURE = env("SESSION_COOKIE_SECURE")
+SECURE_SSL_REDIRECT = env("SECURE_SSL_REDIRECT")
 
 
 # Application definition
