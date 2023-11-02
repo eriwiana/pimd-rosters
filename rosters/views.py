@@ -104,6 +104,14 @@ class EventDetailView(LoginRequiredMixin, UpdateView):
                 rosters.save()
         return super(EventDetailView, self).form_valid(form)
 
+    def get_success_url(self) -> str:
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            f"Event {self.object} is saved successfully!",
+        )
+        return super().get_success_url()
+
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     login_url = "login"
