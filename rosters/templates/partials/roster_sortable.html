@@ -2,9 +2,9 @@
 
 {% block content %}
 <span class="ml-4"><a href="{% url 'event-detail' event.id|stringformat:'s' %}" class="cursor-pointer hover:underline hover:decoration-yellow-400">Back</a></span>
-<section id="{{ id }}" class="{{ id }} p-4 flex mx-auto gap-2 justify-center">
+<section id="{{ id }}" class="{{ id }} flex flex-col-2 gap-4 p-4">
   {% for team in teams %}
-  <article class="StackedListWrapper StackedListWrapper--hasScrollIndicator w-1/2 max-h-fit p-2 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
+  <article class="StackedListWrapper StackedListWrapper--hasScrollIndicator w-full max-h-fit p-2 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
     <header class="StackedListHeader mb-4 border rounded-lg {% if team.label == 'a' %}bg-rose-400{% else %}bg-cyan-400{% endif %}">
       <h3 class="Heading Heading--size3 Heading--colorWhite text-center font-bold">{% if team.label == 'a' %}Team A{% else %}Team B{% endif %}</h3>
     </header>

@@ -11,44 +11,70 @@
   <script src="https://kit.fontawesome.com/3fce789363.js" crossorigin="anonymous" defer></script>
   {% tailwind_preload_css %}
   {% tailwind_css %}
+
+  {% block style %}
+  <style>
+    table,
+    th,
+    td {
+      border: transparent;
+      border-collapse: collapse;
+    }
+  
+    th,
+    td {
+      padding: 5px;
+    }
+  </style>
+  {% endblock %}
 </head>
 
 <body class="bg-gray-200">
 
   <!-- Container for Sidebar and Content -->
-  <div class="flex p-4 h-screen">
+  <div class="flex p-4">
 
     <!-- Sidebar -->
     {% block sidebar %}
     {% if menus %}
-    <aside class="w-1/6">
-      <a href="{% url 'home' %}" class="hover:underline hover:decoration-yellow-400">
-        <h1 class="text-2xl font-semibold text-center">The Rosters</h1>
-      </a>
-      <div class="flex mx-auto justify-between w-1/2 mb-2">
-        <p>{{user.username}}</p>
-        <a href="{% url 'logout' %}" class="hover:text-rose-400" tooltip="Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    <aside class="w-1/6 pr-4 justify-between">
+      <div>
+        <a href="{% url 'home' %}" class="hover:underline hover:decoration-yellow-400">
+          <h1 class="text-2xl font-semibold text-center">The Rosters</h1>
+        </a>
+        <div class="flex mx-auto justify-between px-2 py-1 mb-2">
+          <span class="font-semibold">{{user.username}}</span>
+          <a href="{% url 'logout' %}" class="hover:text-rose-400" tooltip="Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </div>
       </div>
-      <ul class="mt-4">
+    
+      <ul class="mb-auto">
         {% for menu in menus %}
         <li>
-          <a href="{% url menu.path %}"><div class="px-3 py-2 cursor-pointer hover:bg-yellow-200 {% if menu.active %}bg-yellow-400{% else %}bg-white{% endif %} font-bold border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] mb-3"><i class="fas {{ menu.icon }}"></i> {{ menu.label }}</div></a>
+          <a href="{% url menu.path %}"><div class="px-2 py-1 cursor-pointer hover:bg-yellow-200 {% if menu.active %}bg-yellow-400{% else %}bg-white{% endif %} font-bold border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] mb-3 w-full"><i class="fas {{ menu.icon }}"></i> {{ menu.label }}</div></a>
         </li>
         </a>
         {% endfor %}
       </ul>
+      
+      <small class="fixed bottom-0 mb-4">
+        <a href="https://buymeacoffee.com/moelder" target="_blank" class="px-2 py-1 mb-4 bg-yellow-400 hover:bg-emerald-400 border border-black rounded-lg shadow-[3px_3px_0px_1px_black]"><i class="fas fa-mug-hot"></i> Buy me a coffee</a>
+        <div class="px-2 py-1 mt-4 bg-rose-200 cursor-default rounded-lg border border-black rounded-lg shadow-[3px_3px_0px_1px_black]">Crafted with <i class="fas fa-heart hover:text-pink-600"></i> by moel</div>
+      </small>
     </aside>
     {% endif %}
     {% endblock %}
 
     <!-- Content -->
-    <div class="container mx-auto py-6 pl-6">
+    <main class="flex-1">
       {% block content %}
       <!-- Your page content goes here -->
       {% endblock %}
-    </div>
+    </main>
 
   </div>
+
+  {% block script %}{% endblock %}
 </body>
 
 </html>

@@ -3,8 +3,8 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<div class="flex place-content-center">
-  <div class="p-8 bg-white border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] w-1/3">
+<div class="grid place-content-center h-screen">
+  <div class="p-4 bg-white border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
     
     <div class="mb-6">
       <h2 class="text-2xl text-center font-semibold">{{event.title}}</h2>
@@ -18,10 +18,11 @@
       <div class="mb-4">
         <label class="block font-bold mb-1 mb-0 pr-4" for="{{ f.id_for_label }}">{{ f.label }}</label>
         {% if f.errors %}
-          {% render_field f class="appearance-none rounded-md w-full py-2 px-4 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white text-rose-400" %}
+          {% render_field f class="appearance-none rounded-lg w-full px-2 py-1 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white text-rose-400 mb-1" %}
         {% else %}
-          {% render_field f class="appearance-none rounded-md w-full py-2 px-4 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white" %}
+          {% render_field f class="appearance-none rounded-lg w-full px-2 py-1 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white mb-1" %}
           {% for text in f %}
+            <br>
             <small class="text-gray-400">{{ f.help_text|safe }}</small>
           {% endfor %}
         {% endif %}
@@ -33,7 +34,7 @@
       {% endfor %}
 
       <button name="signup"
-        class="mt-2 p-2 text-emerald-950 font-bold bg-emerald-400 hover:bg-cyan-400 cursor-pointer border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
+        class="mt-2 px-2 py-1 text-emerald-950 font-bold bg-emerald-400 hover:bg-cyan-400 cursor-pointer border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
         <i class="fas fa-pen-to-square"></i> Sign Me Up!
       </button>
 
@@ -59,6 +60,10 @@
     </div>
     {% endif %}
   </div>
-  
+
+  <small class="flex flex-row gap-2 my-4 place-content-center">
+    <a href="https://buymeacoffee.com/moelder" target="_blank" class="px-2 py-1 bg-yellow-400 hover:bg-emerald-400 border border-black rounded-lg shadow-[3px_3px_0px_1px_black]"><i class="fas fa-mug-hot"></i> Buy me a coffee</a>
+    <div class="px-2 py-1 bg-rose-200 cursor-default w-max rounded-lg border border-black rounded-lg shadow-[3px_3px_0px_1px_black]">Crafted with <i class="fas fa-heart hover:text-pink-600"></i> by moel</div>
+  </small>
 </div>
 {% endblock %}

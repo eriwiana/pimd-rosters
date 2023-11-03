@@ -66,8 +66,9 @@
       {% endfor %}
     </tbody>
   </table>
-</div>
+{% endblock %}
 
+{% block script %}
 <script>
   var alertDel = document.querySelectorAll('.alert-del');
   alertDel.forEach((x) =>

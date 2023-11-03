@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<div class="flex mx-auto justify-between mb-4 p-2">
+<div class="flex mx-auto justify-between mb-4 w-full">
   <h1 class="font-bold text-lg text-center">Rosters</h1>
   {% if event %}
   <a href="{% url 'event-rosters' event.id|stringformat:'s' %}" title="Arrange Roster Teams">
@@ -15,7 +15,7 @@
 <div class="border rounded-lg bg-yellow-400 text-center px-2 py-1 mb-4">Don't forget to <b>Save</b> after you add rosters below! :)</div>  
 <!-- end of warning banner -->
 
-<table class="table">
+<table class="table w-full">
   {{ rosters.management_form }}
 
   {% for form in rosters.forms %}
@@ -38,26 +38,14 @@
         {% endfor %}
       {% endif %}
         {{ field.errors.as_ul }}
-        {% render_field field class="appearance-none rounded-md w-full py-2 px-4 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white" %}
+        {% render_field field class="appearance-none rounded-lg w-full px-2 py-1 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white" %}
     </td>
     {% endfor %}
   </tr>
   {% endfor %}
 </table>
 
-<style>
-  table,
-  th,
-  td {
-    border: transparent;
-    border-collapse: collapse;
-  }
-
-  th,
-  td {
-    padding: 5px;
-  }
-</style>
+{% block script %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script>
   ; (function ($) {
@@ -283,7 +271,8 @@
 <script type="text/javascript">
   $('.formset_row').formset({
     addText: '<div class="w-max px-2 py-1 text-sm font-bold bg-cyan-400 hover:bg-emerald-400 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]"><i class="fas fa-plus"></i> Add Roster</div>',
-    deleteText: '<i class="fas fa-circle-xmark"></i>',
+    deleteText: '<i class="fas fa-circle-xmark" title="Remove Roster"></i>',
     prefix: 'roster_set'
   });
 </script>
+{% endblock %}
