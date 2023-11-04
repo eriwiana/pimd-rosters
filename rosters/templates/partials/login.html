@@ -4,6 +4,12 @@
 <div class="grid place-content-center h-screen">
   <div class="p-4 bg-white border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
     <h2 class="text-2xl font-semibold mb-6">Login</h2>
+    
+    <div class="mb-4 mx-auto text-red-500 text-sm text-center place-content-center">
+      <!-- Display form errors here -->
+      {{ form.non_field_errors }}
+    </div>
+
     <form method="post">
       {% csrf_token %}
 
@@ -25,18 +31,15 @@
       </div>
 
       <button name="login"
-        class="w-full px-2 py-1 text-emerald-950 font-bold bg-emerald-400 focus:bg-yellow-400 cursor-pointer border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
+        class="w-full px-2 py-1 text-emerald-950 font-bold bg-emerald-400 hover:bg-yellow-400 cursor-pointer border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
         Login
       </button>
     </form>
   </div>
+
+  <small class="flex flex-row gap-2 my-4 place-content-center">
+    <a href="https://buymeacoffee.com/moelder" target="_blank" class="px-2 py-1 bg-yellow-400 hover:bg-emerald-400 border border-black rounded-lg shadow-[3px_3px_0px_1px_black]"><i class="fas fa-mug-hot"></i> Buy me a coffee</a>
+    <div class="px-2 py-1 bg-rose-200 cursor-default w-max rounded-lg border border-black rounded-lg shadow-[3px_3px_0px_1px_black]">Crafted with <i class="fas fa-heart hover:text-pink-600"></i> by moel</div>
+  </small>
 </div>
-<div class="mt-4 text-red-500 text-sm text-center">
-  <!-- Display form errors here -->
-  {{ form.non_field_errors }}
-</div>
-<small class="flex flex-row gap-2 my-4 place-content-center">
-  <a href="https://buymeacoffee.com/moelder" target="_blank" class="px-2 py-1 bg-yellow-400 hover:bg-emerald-400 border border-black rounded-lg shadow-[3px_3px_0px_1px_black]"><i class="fas fa-mug-hot"></i> Buy me a coffee</a>
-  <div class="px-2 py-1 bg-rose-200 cursor-default w-max rounded-lg border border-black rounded-lg shadow-[3px_3px_0px_1px_black]">Crafted with <i class="fas fa-heart hover:text-pink-600"></i> by moel</div>
-</small>
 {% endblock %}

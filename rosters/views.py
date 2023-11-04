@@ -207,6 +207,10 @@ def login_view(request):
             if user:
                 login(request, user)
                 return redirect("home")
+        else:
+            form.error_messages[
+                "invalid_login"
+            ] = "Incorrect username/password."
 
     else:
         form = AuthenticationForm()
