@@ -1,7 +1,7 @@
 import math
 import uuid
 
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -62,3 +62,9 @@ class Event(BaseModel):
 
     def __str__(self) -> str:
         return self.title
+
+
+class Token(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    key = models.CharField(max_length=64)
+    active = models.BooleanField(default=False)

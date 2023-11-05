@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from rosters.models import Event, Roster
+from rosters.models import Event, Roster, Token
 
 
 class RosterAdminTabular(admin.TabularInline):
@@ -25,3 +25,8 @@ class EventAdmin(admin.ModelAdmin):
         return obj.roster_set.count()
 
     get_rosters.short_description = "Rosters"
+
+
+@admin.register(Token)
+class TokenAdmin(admin.ModelAdmin):
+    pass
