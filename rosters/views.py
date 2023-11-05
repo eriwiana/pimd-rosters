@@ -210,8 +210,12 @@ def login_view(request):
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
 
+            if user.is_superuser:
+                login(request, user)
+                return redirect("home")
+
             token = Token.objects.get(user=user)
-            if user and not token.active:
+            if not token.active:
                 messages.add_message(
                     request,
                     messages.ERROR,
@@ -219,9 +223,9 @@ def login_view(request):
                 )
                 return redirect("login")
 
-            if user:
-                login(request, user)
-                return redirect("home")
+            login(request, user)
+            return redirect("home")
+
         else:
             form.error_messages[
                 "invalid_login"
