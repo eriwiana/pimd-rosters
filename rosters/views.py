@@ -1,3 +1,4 @@
+import secrets
 from typing import Any
 
 from django.contrib import messages
@@ -17,9 +18,14 @@ from django.views.generic import (
     View,
 )
 
-from rosters.forms import EventCreateForm, RosterForm, RosterFormSet
+from rosters.forms import (
+    EventCreateForm,
+    RegisterForm,
+    RosterForm,
+    RosterFormSet,
+)
 from rosters.methods import get_menus
-from rosters.models import Event, Roster
+from rosters.models import Event, Roster, Token
 
 
 class EventListView(LoginRequiredMixin, ListView):
@@ -204,6 +210,15 @@ def login_view(request):
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
 
+            token = Token.objects.get(user=user)
+            if user and not token.active:
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    "Your account is not verified yet!",
+                )
+                return redirect("login")
+
             if user:
                 login(request, user)
                 return redirect("home")
@@ -221,3 +236,64 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("home")
+
+
+def sign_up(request):
+    if request.method == "GET":
+        form = RegisterForm()
+        return render(request, "users/register.html", {"form": form})
+
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+
+            # Create token
+            token = Token.objects.create(
+                user=user, key=secrets.token_urlsafe()
+            )
+            return redirect(reverse_lazy("success-signup", args=[token.key]))
+        else:
+            return render(request, "users/register.html", {"form": form})
+
+
+def success_signup(request, key):
+    try:
+        token = Token.objects.get(key=key)
+
+        if not token.active:
+            # send email here instead
+            return render(request, "users/success_signup.html")
+
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            "Your account is active and can be used to login!",
+        )
+    except Token.DoesNotExist:
+        messages.add_message(request, messages.ERROR, "No Account found.")
+
+    return redirect("login")
+
+
+def verify_account(request, key):
+    try:
+        token = Token.objects.get(key=key)
+
+        if not token.active:
+            token.active = True
+            token.save()
+
+            messages.add_message(
+                request, messages.SUCCESS, "Your account is verified!"
+            )
+        else:
+            messages.add_message(
+                request, messages.SUCCESS, "Your account is already verified!"
+            )
+    except Token.DoesNotExist:
+        messages.add_message(request, messages.ERROR, "No Account found.")
+
+    return redirect("login")

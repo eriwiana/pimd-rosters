@@ -69,18 +69,3 @@
     </tbody>
   </table>
 {% endblock %}
-
-{% block script %}
-<script>
-  var alertDel = document.querySelectorAll('.alert-del');
-  alertDel.forEach((x) =>
-    x.addEventListener('click', function () {
-      x.classList.add('hidden');
-    })
-  );
-
-  function copyLink(link) {
-    navigator.clipboard.writeText(link);
-  };
-</script>
-{% endblock %}

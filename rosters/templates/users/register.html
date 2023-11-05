@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="grid place-content-center h-screen">
+  <div class="p-4 bg-white border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
+    <form method="POST" novalidate>
+      {% csrf_token %}
+      <h2 class="text-2xl font-semibold mb-6">Register a new Account</h2>
+      {% for f in form %}
+        <div class="mb-4">
+          <label class="block font-bold mb-1 mb-0 pr-4" for="{{ f.id_for_label }}">{{ f.label }}</label>
+          {% if f.errors %}
+            {% render_field f class="appearance-none rounded-lg w-full px-2 py-1 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white text-rose-400 mb-1" %}
+          {% else %}
+            {% render_field f class="appearance-none rounded-lg w-full px-2 py-1 border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black] leading-tight focus:outline-none focus:bg-white mb-1" %}
+            {% for text in f %}
+              <br>
+              <small class="text-gray-400">{{ f.help_text|safe }}</small>
+            {% endfor %}
+          {% endif %}
+  
+          {% for error in f.errors %}
+          <small class="text-rose-400">{{ error }}</small>
+          {% endfor %}
+        </div>
+        {% endfor %}	
+        <button name="signup"
+          class="mt-2 px-2 py-1 text-emerald-950 font-bold bg-emerald-400 hover:bg-cyan-400 cursor-pointer border-2 border-black rounded-lg shadow-[3px_3px_0px_1px_black]">
+          <i class="fas fa-pen-to-square"></i> Register
+        </button>
+        <span class="ml-4"><a href="{% url 'login' %}"
+          class="hover:underline hover:decoration-yellow-400">Back to Login</a></span>
+    </form>
+  </div>
+  <small class="flex flex-row gap-2 my-4 place-content-center">
+    {#<a href="https://buymeacoffee.com/moelder" target="_blank" class="px-2 py-1 bg-yellow-400 hover:bg-emerald-400 border border-black rounded-lg shadow-[3px_3px_0px_1px_black]"><i class="fas fa-mug-hot"></i> Buy me a coffee</a>#}
+    <div class="px-2 py-1 bg-rose-200 cursor-default w-max rounded-lg border border-black rounded-lg shadow-[3px_3px_0px_1px_black]">Crafted with <i class="fas fa-heart hover:text-pink-600"></i> by moel</div>
+  </small>
+</div>
+
+{% endblock content%}

@@ -33,4 +33,15 @@ urlpatterns = [
     ),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
+    path("register/", views.sign_up, name="register"),
+    path(
+        "account/success-signup/<str:key>/",
+        views.success_signup,
+        name="success-signup",
+    ),
+    path(
+        "account/verify-account/<str:key>/",
+        views.verify_account,
+        name="verify-account",
+    ),
 ]
