@@ -41,7 +41,7 @@ class EventListView(LoginRequiredMixin, ListView):
         return qs
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        kwargs["menus"] = get_menus(active="Events")
+        kwargs["menus"] = get_menus(active="event-list")
 
         kwargs["groups"] = self.request.user.groups.all()
         if self.request.user.is_superuser:
