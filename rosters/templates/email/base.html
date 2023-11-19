@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
+  <title>{{ subject }}</title>
+  <style>
+    a {
+      text-decoration: none;
+      color: black;
+    }
+    body {
+      font-family: "Inter";
+    }
+    .content {
+      margin: auto;
+    }
+    .box {
+      border: 2px solid black;
+      border-radius: .5rem;
+      box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 3px 3px 0px 1px;
+      padding: 4px 4px;
+    }
+    .center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="box center">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+    
+</body>
+</html>

@@ -24,7 +24,7 @@ from rosters.forms import (
     RosterForm,
     RosterFormSet,
 )
-from rosters.methods import get_menus
+from rosters.methods import get_menus, send_email
 from rosters.models import Event, Roster, Token
 
 
@@ -268,7 +268,20 @@ def success_signup(request, key):
         token = Token.objects.get(key=key)
 
         if not token.active:
-            # send email here instead
+            subject = "Welcome to The Rosters!"
+            verify_account_endpoint = reverse_lazy(
+                "verify-account", kwargs={"key": token.key}
+            )
+            send_email(
+                subject,
+                to_email=[token.user.email],
+                template="welcome.html",
+                context={
+                    "username": token.user.username,
+                    "verify_link": f"{request.META.get('HTTP_HOST')}{verify_account_endpoint}",
+                    "subject": subject,
+                },
+            )
             return render(request, "users/success_signup.html")
 
         messages.add_message(

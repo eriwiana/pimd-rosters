@@ -1,0 +1,11 @@
+{% extends "email/base.html" %}
+
+{% block content %}
+<h1>Welcome, {{ username }}!</h1>
+<p>
+  Finish your registration by clicking button below!<br><br>
+  <a href="{{ verify_link }}" target="_blank" class="box" style="background-color: rgb(34, 211, 238); padding: 4px; font-weight: bold;">
+    Verify Account
+  </a>
+</p>
+{% endblock %}
